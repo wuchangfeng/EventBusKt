@@ -26,7 +26,7 @@ object EventBus {
         val eventType = EventType(event.javaClass,tag)
         // 找出所有该事件的订阅者
         val list = methodFinder.getMatchEventType(eventType)
-        // 分发
+        // 分发出去
         list?.let{
             EventDispatcher.dispatchEvent(event, it)
         }
