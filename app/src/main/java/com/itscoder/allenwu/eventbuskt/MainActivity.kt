@@ -14,13 +14,42 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         EventBus.register(this)
 
-        findViewById<Button>(R.id.btn).setOnClickListener(View.OnClickListener {
-            EventBus.post(TestEvent("Hello,EventBus"))
+        findViewById<Button>(R.id.btn_1).setOnClickListener(View.OnClickListener {
+            Thread{
+                EventBus.post(TestEvent("Hello,POST"))
+            }.start()
+        })
+
+        findViewById<Button>(R.id.btn_2).setOnClickListener(View.OnClickListener {
+            EventBus.post(TestEvent("Hello,ASYNC"))
+        })
+
+        findViewById<Button>(R.id.btn_3).setOnClickListener(View.OnClickListener {
+            EventBus.post(TestEvent("Hello,MAIN"))
+        })
+
+        findViewById<Button>(R.id.btn_4).setOnClickListener(View.OnClickListener {
+            EventBus.post(TestEvent("Hello,TAG"),"test")
         })
     }
 
-    @Subscriber("")
+    @Subscriber
     fun test(event: TestEvent){
+        Log.i("MainActivity",event.toString() + "currentThread:" + Thread.currentThread().name)
+    }
+
+    @Subscriber("",ThreadMode.ASYNC)
+    fun test2(event: TestEvent){
+        Log.i("MainActivity",event.toString() + "currentThread:" + Thread.currentThread().name)
+    }
+
+    @Subscriber("",ThreadMode.MAIN)
+    fun test3(event: TestEvent){
+        Log.i("MainActivity",event.toString() + "currentThread:" + Thread.currentThread().name)
+    }
+
+    @Subscriber(tag = "test")
+    fun test5(event: TestEvent){
         Log.i("MainActivity",event.toString())
     }
 

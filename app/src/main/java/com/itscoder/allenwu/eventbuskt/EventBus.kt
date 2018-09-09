@@ -6,7 +6,7 @@ import java.util.concurrent.Executors
 
 object EventBus {
     private val executorService: ExecutorService = Executors.newCachedThreadPool()
-    private const val DEFAULT_TAG = ""
+    const val DEFAULT_TAG = ""
     // 根据事件类型，找到所有对应的注解方法
     private val subscriberMap = mutableMapOf<EventType,CopyOnWriteArrayList<Subscription>>()
     private val methodFinder = SubscriberMethodFinder(subscriberMap)
